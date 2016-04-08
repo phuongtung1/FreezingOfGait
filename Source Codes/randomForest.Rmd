@@ -1,0 +1,60 @@
+---
+title: "RandomForest"
+output: html_document
+---
+
+```{r,message=FALSE, echo=FALSE}
+library(ggplot2)
+library(dplyr)
+library(gtable)
+library(grid)
+library(randomForest)
+```
+
+```{r, echo=FALSE}
+trainRaw <- read.csv("patient2test1.csv")
+train <- dplyr::filter(trainRaw, anno > 0) 
+
+testRaw <- read.csv("patient2test2.csv")
+test <- dplyr::filter(testRaw, anno > 0) 
+
+rf <- randomForest(as.factor(anno) ~ AHF + AV + AHL, data=train, importance=TRUE)
+varImpPlot(rf)
+
+Prediction <- predict(rf, test)
+test.predicted <- cbind(test, Prediction)
+test.predicted <- dplyr::mutate(test.predicted, correct = anno == Prediction)
+submit <- data.frame(time = test.predicted$time,anno = test.predicted$anno, prediction = Prediction, Correct = test.predicted$correct)
+write.csv(submit, file = "ankle.csv", row.names = FALSE)
+
+
+rf <- randomForest(as.factor(anno) ~ ULHF + ULV + ULHL, data=train, importance=TRUE)
+varImpPlot(rf)
+
+Prediction <- predict(rf, test)
+test.predicted <- cbind(test, Prediction)
+test.predicted <- dplyr::mutate(test.predicted, correct = anno == Prediction)
+submit <- data.frame(time = test.predicted$time,anno = test.predicted$anno, prediction = Prediction, Correct = test.predicted$correct)
+write.csv(submit, file = "upperLeg.csv", row.names = FALSE)
+
+
+rf <- randomForest(as.factor(anno) ~ THF + TV + THL, data=train, importance=TRUE)
+varImpPlot(rf)
+
+Prediction <- predict(rf, test)
+test.predicted <- cbind(test, Prediction)
+test.predicted <- dplyr::mutate(test.predicted, correct = anno == Prediction)
+submit <- data.frame(time = test.predicted$time,anno = test.predicted$anno, prediction = Prediction, Correct = test.predicted$correct)
+write.csv(submit, file = "trunk.csv", row.names = FALSE)
+
+
+rf <- randomForest(as.factor(anno) ~ AHF + AV + AHL + ULHF + ULV + ULHL + THF + TV + THL, data=train, importance=TRUE)
+varImpPlot(rf)
+
+Prediction <- predict(rf, test)
+test.predicted <- cbind(test, Prediction)
+test.predicted <- dplyr::mutate(test.predicted, correct = anno == Prediction)
+submit <- data.frame(time = test.predicted$time,anno = test.predicted$anno, prediction = Prediction, Correct = test.predicted$correct)
+write.csv(submit, file = "all.csv", row.names = FALSE)
+
+```

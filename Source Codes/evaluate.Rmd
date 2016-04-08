@@ -1,0 +1,67 @@
+---
+title: "evaluate"
+output: html_document
+---
+
+  
+```{r,message=FALSE, echo=FALSE}
+library(ggplot2)
+library(dplyr)
+library(gtable)
+library(grid)
+library(randomForest)
+```
+
+Ankle
+```{r, echo=FALSE}
+result <- read.csv("ankle.csv")
+table(result$Correct)
+
+print('only no freezing of gait:')
+resultFreezing <- dplyr::filter(result, anno == 1)
+table(resultFreezing$Correct)
+print("only freezing of gait:")
+resultFreezing <- dplyr::filter(result, anno == 2)
+table(resultFreezing$Correct)
+```
+
+Upper Leg
+```{r, echo=FALSE}
+result <- read.csv("upperLeg.csv")
+table(result$Correct)
+
+print("only no freezing of gait:")
+resultFreezing <- dplyr::filter(result, anno == 1)
+table(resultFreezing$Correct)
+print("only freezing of gait:")
+resultFreezing <- dplyr::filter(result, anno == 2)
+table(resultFreezing$Correct)
+```
+
+Trunk
+```{r, echo=FALSE}
+result <- read.csv("trunk.csv")
+table(result$Correct)
+
+print("only no freezing of gait:")
+resultFreezing <- dplyr::filter(result, anno == 1)
+table(resultFreezing$Correct)
+print("only freezing of gait:")
+resultFreezing <- dplyr::filter(result, anno == 2)
+table(resultFreezing$Correct)
+```
+
+All
+```{r, echo=FALSE}
+result <- read.csv("all.csv")
+table(result$Correct)
+
+print("only no freezing of gait:")
+resultFreezing <- dplyr::filter(result, anno == 1)
+table(resultFreezing$Correct)
+print("only freezing of gait:")
+resultFreezing <- dplyr::filter(result, anno == 2)
+table(resultFreezing$Correct)
+
+
+```
